@@ -10,22 +10,32 @@ std::string recieve(char buffer[256]);
 
 int main()
 {
-
-	DisplayWindow(200, 200, "Hello, world!");
-
+	sf::Socket::Status client_status;
 	sf::TcpSocket socket;
-	socket.connect("192.168.1.43", 23);
-	std::cout << "Connection attempt finished";
+	sf::Socket::Status status = socket.connect("192.168.1.43", 23);
+
+	socket.setBlocking(false);
+
+	if (status != 0) {
+		std::cout << "Could not connect to server";
+		return 0;
+	}
 
 	char buffer[256];
 	std::size_t received = 0;
 
-	socket.receive(buffer, sizeof(buffer), received);
-	recieve(buffer);
-
-	while (true)
+	while (window.isOpen())
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		client_status = socket.receive(buffer, sizeof(buffer), received);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && client_status == 0) {
+			recieve(buffer);
 		}
 	}
 
