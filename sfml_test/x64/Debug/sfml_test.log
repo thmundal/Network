@@ -1,3 +1,6 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (sfml_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  main.cpp
+c:\c++\network\sfml_test\main.cpp(1): warning C4081: expected 'newline'; found ';'
+c:\c++\network\sfml_test\main.cpp(19): warning C4101: 'buffer': unreferenced local variable
   sfml_test.vcxproj -> C:\C++\Network\x64\Debug\Network.exe
   sfml_test.vcxproj -> C:\C++\Network\x64\Debug\Network.pdb (Partial PDB)

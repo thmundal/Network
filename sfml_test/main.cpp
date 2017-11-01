@@ -28,8 +28,8 @@ int main()
 				window.close();
 		}
 
-		socket.receive(buffer, sizeof(buffer), received);
-		std::cout << "server said " << buffer << std::endl;
+		//socket.receive(buffer, sizeof(buffer), received);
+		//std::cout << "server said " << buffer << std::endl;
 
 		window.clear();
 		window.draw(shape);

@@ -1,34 +1,19 @@
-/*
-Chat Server
-
-A simple server that distributes any incoming messages to all
-connected clients.  To use, telnet to your device's IP address and type.
-You can see the client's input in the serial monitor as well.
-Using an Arduino Wiznet Ethernet shield.
-
-Circuit:
-* Ethernet shield attached to pins 10, 11, 12, 13
-
-created 18 Dec 2009
-by David A. Mellis
-modified 9 Apr 2012
-by Tom Igoe
-
-*/
+// DHT
+#include <dht.h>
+dht DHT;
+#define DHT11_PIN A0
+// /DHT
 
 #include <SPI.h>
 #include <UIPEthernet.h>
 
-// Enter a MAC address and IP address for your controller below.
-// The IP address will be dependent on your local network.
-// gateway and subnet are optional:
 byte mac[] = {
 	0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
-IPAddress ip(192, 168, 1, 177);
+IPAddress ip(192, 168, 1, 43);
 IPAddress myDns(192, 168, 1, 1);
 IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 0, 0);
+IPAddress subnet(255, 255, 255, 0);
 
 
 // telnet defaults to port 23
@@ -61,19 +46,14 @@ void loop() {
 			// clear out the input buffer:
 			client.flush();
 			Serial.println("We have a new client");
-			client.println("Hello, client from Visual Studio!");
 			alreadyConnected = true;
 		}
 
 		if (client.available() > 0) {
-			// read the bytes incoming from the client:
-			char thisChar = client.read();
-			// echo the bytes back to the client:
-			server.write(thisChar);
-			// echo the bytes to the server as well:
-			Serial.write(thisChar);
+			int chk = DHT.read11(DHT11_PIN);
+			String data = "{" + String(DHT.temperature) + "," + String(DHT.humidity) + "}";
+			server.print(data);
+			delay(1000);
 		}
 	}
 }
-
-
