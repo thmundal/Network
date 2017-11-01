@@ -2,8 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Network/IpAddress.hpp>
-
+#include <string>
 #include <iostream>
+
+std::string recieve(char buffer[256]);
 
 int main()
 {
@@ -28,8 +30,10 @@ int main()
 				window.close();
 		}
 
-		//socket.receive(buffer, sizeof(buffer), received);
-		//std::cout << "server said " << buffer << std::endl;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+			socket.receive(buffer, sizeof(buffer), received);
+			recieve(buffer);
+		}
 
 		window.clear();
 		window.draw(shape);
@@ -37,4 +41,34 @@ int main()
 	}
 
 	return 0;
+}
+
+std::string recieve(char buffer[256])
+{
+	//std::cout << "server said " << buffer << std::endl;
+
+	int i = 0;
+	bool write = false;
+	std::string return_string;
+
+	for (int i = 0; i < 256; i++)
+	{
+
+
+		if (buffer[i] == '{') {
+			write = true;
+			continue;
+		}
+
+		if (buffer[i] == '}') {
+			write = false;
+			break;
+		}
+
+		if (write) {
+			return_string += buffer[i];
+		}
+	}
+	std::cout << return_string << std::endl;
+	return return_string;
 }
