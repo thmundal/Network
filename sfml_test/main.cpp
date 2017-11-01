@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Network/IpAddress.hpp>
+#include "DisplayWindow.h"
 #include <string>
 #include <iostream>
 
@@ -10,34 +11,22 @@ std::string recieve(char buffer[256]);
 int main()
 {
 
+	DisplayWindow(200, 200, "Hello, world!");
+
 	sf::TcpSocket socket;
 	socket.connect("192.168.1.43", 23);
-
-
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	std::cout << "Connection attempt finished";
 
 	char buffer[256];
 	std::size_t received = 0;
 
-	while (window.isOpen())
+	socket.receive(buffer, sizeof(buffer), received);
+	recieve(buffer);
+
+	while (true)
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-			socket.receive(buffer, sizeof(buffer), received);
-			recieve(buffer);
 		}
-
-		window.clear();
-		window.draw(shape);
-		window.display();
 	}
 
 	return 0;
@@ -53,8 +42,6 @@ std::string recieve(char buffer[256])
 
 	for (int i = 0; i < 256; i++)
 	{
-
-
 		if (buffer[i] == '{') {
 			write = true;
 			continue;
