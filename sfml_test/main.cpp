@@ -9,9 +9,13 @@
 #include "CSVWriter.h"
 
 std::string recieve(char buffer[256]);
+CSVWriter writer = CSVWriter("Data.csv");
 
 int main()
 {
+
+
+
 	DisplayWindow context(200, 200, "Hello, world!");
 
 	sf::Socket::Status client_status;
@@ -32,10 +36,6 @@ int main()
 	char buffer[256];
 	std::size_t received = 0;
 	
-	/*CSVWriter writer("Data.csv");
-	std::set<int> dataList_2 = { x, y };
-	writer.addDatainRow(dataList_2.begin(), dataList_2.end());
-	*/
 	bool request = false;
 	bool waiting = false;
 
@@ -73,6 +73,8 @@ std::string recieve(char buffer[256])
 	int i = 0;
 	bool write = false;
 	std::string return_string;
+	std::vector<std::string> values{ "", "" };
+	int val = 0;
 
 	for (int i = 0; i < 256; i++)
 	{
@@ -81,15 +83,26 @@ std::string recieve(char buffer[256])
 			continue;
 		}
 
+		if (buffer[i] == ',') {
+			val = 1;
+			i++;
+		}
+
 		if (buffer[i] == '}') {
+			val = 0;
 			write = false;
 			break;
 		}
 
 		if (write) {
+			values[val] += buffer[i];
 			return_string += buffer[i];
 		}
 	}
+
+	std::set<int> dataList_2 = { 1, 2 };
+	writer.addDatainRow(values.begin(), values.end());
+
 	std::cout << return_string << std::endl;
 	return return_string;
 }

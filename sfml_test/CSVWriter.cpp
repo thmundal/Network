@@ -1,6 +1,6 @@
 #include "CSVWriter.h"
 
-
+/*
 class CSVWriter
 {
 private:
@@ -15,3 +15,4 @@ public:
 	template<typename T>
 	void addDatainRow(T first, T last);
 };
+*/
