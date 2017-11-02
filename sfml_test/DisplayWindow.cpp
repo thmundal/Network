@@ -6,14 +6,25 @@ DisplayWindow::DisplayWindow(int width, int height, char window_text[])
 {
 	window =  new sf::RenderWindow(sf::VideoMode(width, height), window_text);
 	window->display();
-	//sf::Event event;
-	//while (window.pollEvent(event))
-	//{
-	//	if (event.type == sf::Event::Closed)
-	//		window.close();
-	//}
 }
 
+void DisplayWindow::update(std::function<void(double)>&& cb) {
+	updateCallback = cb;
+}
+
+void DisplayWindow::loop() {
+	while (window->isOpen()) {
+		sf::Event event;
+		while (window->pollEvent(event))
+		{
+			updateCallback(0.0);
+
+			if (event.type == sf::Event::Closed)
+				window->close();
+
+		}
+	}
+}
 
 DisplayWindow::~DisplayWindow()
 {
