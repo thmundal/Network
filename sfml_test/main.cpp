@@ -20,7 +20,8 @@ int main()
 
 	sf::Socket::Status client_status;
 	sf::TcpSocket socket;
-	sf::Socket::Status status = socket.connect("192.168.1.43", 23);
+	//sf::Socket::Status status = socket.connect("192.168.1.43", 23);
+	sf::Socket::Status status = socket.connect("79.160.104.89", 2323); // Thomas sin Arduino
 
 
 	if (status != sf::Socket::Status::Done) {
