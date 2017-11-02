@@ -1,4 +1,5 @@
-#pragma comment(lib, "sfml-network.lib");
+#pragma comment(lib, "sfml-network.lib")
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Network/IpAddress.hpp>
@@ -10,29 +11,52 @@ std::string recieve(char buffer[256]);
 
 int main()
 {
-	DisplayWindow(200, 200, "Hello, world!");
+	DisplayWindow context(200, 200, "Hello, world!");
 
 	sf::Socket::Status client_status;
 	sf::TcpSocket socket;
 	sf::Socket::Status status = socket.connect("192.168.1.43", 23);
 
-	socket.setBlocking(false);
 
-	if (status != 0) {
-		std::cout << "Could not connect to server";
+	if (status != sf::Socket::Status::Done) {
+		std::cout << "Could not connect to server" << std::endl;
 		return 0;
 	}
+	else {
+		std::cout << "Connected to arduino" << std::endl;
+	}
+
+	//socket.setBlocking(false);
 
 	char buffer[256];
 	std::size_t received = 0;
 
-	while (true)
-	{
-		client_status = socket.receive(buffer, sizeof(buffer), received);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && client_status == 0) {
-			recieve(buffer);
+	bool request = false;
+	bool waiting = false;
+
+	context.update([&request, &received, &waiting, &client_status, &socket, &buffer](double delta_time) {
+
+		request = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+		// Simulate keypress:
+		//if (!request)
+		//	request = true;
+
+		if (request && !waiting) {
+			std::cout << "Request data from arduino..." << std::endl;
+			client_status = socket.receive(buffer, sizeof(buffer), received);
+			waiting = true;
 		}
-	}
+
+		if (waiting && client_status == socket.Done) {
+			std::cout << "Data received, handle..." << std::endl;
+			recieve(buffer);
+			request = false;
+			waiting = false;
+		}
+	});
+
+	context.loop();
 
 	return 0;
 }
