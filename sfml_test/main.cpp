@@ -6,6 +6,7 @@
 #include "DisplayWindow.h"
 #include <string>
 #include <iostream>
+#include "CSVWriter.h"
 
 std::string recieve(char buffer[256]);
 
@@ -30,7 +31,11 @@ int main()
 
 	char buffer[256];
 	std::size_t received = 0;
-
+	
+	/*CSVWriter writer("Data.csv");
+	std::set<int> dataList_2 = { x, y };
+	writer.addDatainRow(dataList_2.begin(), dataList_2.end());
+	*/
 	bool request = false;
 	bool waiting = false;
 
