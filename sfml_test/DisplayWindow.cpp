@@ -4,8 +4,7 @@
 
 DisplayWindow::DisplayWindow(int width, int height, char window_text[])
 {
-	sf::RenderWindow win(sf::VideoMode(width, height), window_text);
-	window = &win;
+	window =  new sf::RenderWindow(sf::VideoMode(width, height), window_text);
 	window->display();
 	//sf::Event event;
 	//while (window.pollEvent(event))
@@ -18,4 +17,5 @@ DisplayWindow::DisplayWindow(int width, int height, char window_text[])
 
 DisplayWindow::~DisplayWindow()
 {
+	delete window;
 }
