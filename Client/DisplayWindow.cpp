@@ -83,8 +83,8 @@ void DisplayWindow::loop() {
 		window->clear(sf::Color(37, 41, 44));
 		drawGraph();
 		button();
-		printText("Temperature: " + std::to_string(temp) + "C", 25, 175, 36, RED, "SairaSemiCondensed-Regular.ttf");
-		printText("Humidity: " + std::to_string(humid) + "%", 25, 275, 36, BLUE, "SairaSemiCondensed-Regular.ttf");
+		printText("Temperature: " + std::to_string(temp) + "C", 25, 180, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
+		printText("Humidity: " + std::to_string(humid) + "%", 25, 275, 36, sf::Color(105, 168, 187), "SairaSemiCondensed-Regular.ttf");
 		window->display();
 	}
 }
@@ -128,10 +128,10 @@ void DisplayWindow::drawGraph()
 	bg.setSize({ 800, 500 });
 	bg.setFillColor(sf::Color(37, 41, 44));
 	bg.setOutlineColor(sf::Color(54, 59, 63));
-	bg.setOutlineThickness(10.f);
+	bg.setOutlineThickness(3.f);
 	bg.setPosition({ 455, 195 });
 	window->draw(bg);
-	for (int i = 1; i <= 41; i++)
+	for (int i = 1; i <= 40; i++)
 	{
 		sf::RectangleShape line;
 		line.setSize({ 800, 1 });
@@ -139,10 +139,34 @@ void DisplayWindow::drawGraph()
 		line.setPosition({ 455.f, float(195 + 500 / 40 * i) });
 		window->draw(line);
 		std::string print = std::to_string(31 - i);
-		printText(print, 420, (195 + 500 / 40 * i) - 500 / 40 + 4, 13, WHITE);
+		printText(print, 420, (195 + (500 / 40 * i)) - 500 / 40, 500 / 40, WHITE);
 	}
 
+	std::vector<int> temperatures;
+	std::vector<int> humidities;
 
+	std::ifstream in;
+	in.open("Data.csv");
+	std::string line;
+
+	while (getline(in, line))
+	{
+		int	t = std::stoi(line.substr(0, line.find(',')));
+		int h = std::stoi(line.substr(line.find(',') + 1, line.size() - 1));
+		temperatures.push_back(t);
+		humidities.push_back(h);
+	}
+	in.close();
+
+	float x = 455.0;
+	for (int i = 0; i < temperatures.size(); i++)
+	{
+		sf::CircleShape dot;
+		dot.setFillColor(sf::Color(225, 77, 67));
+		dot.setRadius(5.0);
+		dot.setPosition({ (x + (i + 1) * 800 / (temperatures.size() + 1)) , float(570.0 - double(temperatures.at(i)) * (500.0 / 40.0)) });
+		window->draw(dot);
+	}
 }
 
 void DisplayWindow::updateTH(int temp, int humid)

@@ -35,7 +35,7 @@ int main()
 
 	char buffer[256];
 	std::size_t received = 0;
-	
+
 	bool request = false;
 	bool waiting = false;
 
@@ -71,7 +71,7 @@ std::vector<std::string> recieve(char buffer[256])
 	int i = 0;
 	bool write = false;
 	std::string return_string;
-	std::vector<std::string> values{ "", "" };
+	std::vector<std::string> values{ "0", "0" };
 	int val = 0;
 
 	for (int i = 0; i < 256; i++)
@@ -100,6 +100,6 @@ std::vector<std::string> recieve(char buffer[256])
 
 	std::set<int> dataList_2 = { 1, 2 };
 	writer.addDatainRow(values.begin(), values.end());
-	std::cout << values.at(0) << ", " << values.at(1);
+	std::cout << values.at(0) << ", " << values.at(1) << std::endl;
 	return values;
 }
