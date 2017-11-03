@@ -1,6 +1,7 @@
 Debug/
 Release/
-x64/
+x64/Debug/
+!x64/Debug/*.dll
 sfml_test/x64/
 ArduinoServer/Debug
 ArduinoServer/Release
