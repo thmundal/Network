@@ -16,8 +16,7 @@ int main()
 
 
 
-	DisplayWindow context(200, 200, "Hello, world!");
-
+	DisplayWindow context(1280, 720, "Hello, world!");
 	sf::Socket::Status client_status;
 	sf::TcpSocket socket;
 	//sf::Socket::Status status = socket.connect("192.168.1.43", 23);
@@ -103,7 +102,6 @@ std::string recieve(char buffer[256])
 
 	std::set<int> dataList_2 = { 1, 2 };
 	writer.addDatainRow(values.begin(), values.end());
-
 	std::cout << return_string << std::endl;
 	return return_string;
 }
