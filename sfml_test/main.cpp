@@ -39,10 +39,10 @@ int main()
 	bool request = false;
 	bool waiting = false;
 
-	context.update([&request, &received, &waiting, &client_status, &socket, &buffer](double delta_time) {
+	context.update([&request, &received, &waiting, &client_status, &socket, &buffer, &context](double delta_time) {
 
-		request = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
+		request = context.connect;
+		
 		// Simulate keypress:
 		//if (!request)
 		//	request = true;
@@ -58,6 +58,7 @@ int main()
 			recieve(buffer);
 			request = false;
 			waiting = false;
+			context.connect = false;
 		}
 	});
 
