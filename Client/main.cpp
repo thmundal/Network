@@ -8,7 +8,7 @@
 #include <iostream>
 #include "CSVWriter.h"
 
-std::string recieve(char buffer[256]);
+std::vector<std::string> recieve(char buffer[256]);
 CSVWriter writer = CSVWriter("Data.csv");
 
 int main()
@@ -42,10 +42,6 @@ int main()
 	context.update([&request, &received, &waiting, &client_status, &socket, &buffer, &context](double delta_time) {
 
 		request = context.connect;
-		
-		// Simulate keypress:
-		//if (!request)
-		//	request = true;
 
 		if (request && !waiting) {
 			std::cout << "Request data from arduino..." << std::endl;
@@ -55,7 +51,8 @@ int main()
 
 		if (waiting && client_status == socket.Done) {
 			std::cout << "Data received, handle..." << std::endl;
-			recieve(buffer);
+			std::vector<std::string> values = recieve(buffer);
+			context.updateTH(std::stoi(values.at(0)), std::stoi(values.at(1)));
 			request = false;
 			waiting = false;
 			context.connect = false;
@@ -67,7 +64,7 @@ int main()
 	return 0;
 }
 
-std::string recieve(char buffer[256])
+std::vector<std::string> recieve(char buffer[256])
 {
 	//std::cout << "server said " << buffer << std::endl;
 
@@ -103,6 +100,6 @@ std::string recieve(char buffer[256])
 
 	std::set<int> dataList_2 = { 1, 2 };
 	writer.addDatainRow(values.begin(), values.end());
-	std::cout << return_string << std::endl;
-	return return_string;
+	std::cout << values.at(0) << ", " << values.at(1);
+	return values;
 }
