@@ -3,7 +3,8 @@ Release/
 x64/Debug/
 !x64/Debug/*.dll
 sfml_test/x64/
-ArduinoServer/Debug
-ArduinoServer/Release
+ArduinoServer/Debug/
+ArduinoServer/Release/
+ArduinoServer/__vm/
 .vs/
 sfml_test/Data.csv
