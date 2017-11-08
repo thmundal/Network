@@ -2,9 +2,9 @@ Debug/
 Release/
 x64/Debug/
 !x64/Debug/*.dll
-sfml_test/x64/
+Client/x64/
 ArduinoServer/Debug/
 ArduinoServer/Release/
 ArduinoServer/__vm/
 .vs/
-sfml_test/Data.csv
+Client/Data.csv
