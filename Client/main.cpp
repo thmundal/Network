@@ -13,15 +13,14 @@ CSVWriter writer = CSVWriter("Data.csv");
 
 int main()
 {
+	DisplayWindow context(1280, 720, "Temperature and humidity");
 
-
-
-	DisplayWindow context(1280, 720, "Hello, world!");
 	sf::Socket::Status client_status;
 	sf::TcpSocket socket;
 	//sf::Socket::Status status = socket.connect("192.168.1.43", 23);
 	sf::Socket::Status status = socket.connect("79.160.104.89", 2323); // Thomas sin Arduino
 
+	socket.send("a", 1);
 
 	if (status != sf::Socket::Status::Done) {
 		std::cout << "Could not connect to server" << std::endl;
@@ -31,7 +30,7 @@ int main()
 		std::cout << "Connected to arduino" << std::endl;
 	}
 
-	//socket.setBlocking(false);
+	socket.setBlocking(false);
 
 	char buffer[256];
 	std::size_t received = 0;
@@ -39,28 +38,43 @@ int main()
 	bool request = false;
 	bool waiting = false;
 
-	context.update([&request, &received, &waiting, &client_status, &socket, &buffer, &context](double delta_time) {
-
+	context.update([&request, &received, &waiting, &client_status, &socket, &buffer, &context, &status](double delta_time) {
 		request = context.connect;
+		
+		//std::cout << "request:" << request << " waiting:" << waiting << std::endl;
 
 		if (request && !waiting) {
-			std::cout << "Request data from arduino..." << std::endl;
 			client_status = socket.receive(buffer, sizeof(buffer), received);
+			std::cout << "Request data from arduino..." << std::endl;
 			waiting = true;
+		}
+
+		if (waiting && client_status != socket.Done) {
+			context.printText("Waiting for data...", 25, 325, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
 		}
 
 		if (waiting && client_status == socket.Done) {
 			std::cout << "Data received, handle..." << std::endl;
+			context.printText("Reading data...", 25, 325, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
 			std::vector<std::string> values = recieve(buffer);
 			context.updateTH(std::stoi(values.at(0)), std::stoi(values.at(1)));
 			request = false;
 			waiting = false;
 			context.connect = false;
 		}
+
+		context.printText("Connection status: " + std::to_string(status), 25, 30, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
+		context.printText("Network status: " + std::to_string(client_status) , 25, 75, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
+		context.button();
+		
+		context.drawGraph();
+		context.printText("Temperature: " + std::to_string(context.temp) + "C", 25, 180, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
+		context.printText("Humidity: " + std::to_string(context.humid) + "%", 25, 275, 36, sf::Color(105, 168, 187), "SairaSemiCondensed-Regular.ttf");
 	});
 
 	context.loop();
 
+	socket.disconnect();
 	return 0;
 }
 
@@ -98,8 +112,7 @@ std::vector<std::string> recieve(char buffer[256])
 		}
 	}
 
-	std::set<int> dataList_2 = { 1, 2 };
-	writer.addDatainRow(values.begin(), values.end());
+	writer.addDatainRow(values);
 	std::cout << values.at(0) << ", " << values.at(1) << std::endl;
 	return values;
 }

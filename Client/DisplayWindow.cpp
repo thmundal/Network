@@ -63,7 +63,6 @@ void DisplayWindow::loop() {
 		sf::Event event;
 		while (window->pollEvent(event))
 		{
-			updateCallback(0.0);
 
 			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 				lmb_pressed = true;
@@ -81,10 +80,7 @@ void DisplayWindow::loop() {
 				focus = false;
 		}
 		window->clear(sf::Color(37, 41, 44));
-		drawGraph();
-		button();
-		printText("Temperature: " + std::to_string(temp) + "C", 25, 180, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
-		printText("Humidity: " + std::to_string(humid) + "%", 25, 275, 36, sf::Color(105, 168, 187), "SairaSemiCondensed-Regular.ttf");
+		updateCallback(0.0);
 		window->display();
 	}
 }

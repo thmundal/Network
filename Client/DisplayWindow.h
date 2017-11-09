@@ -22,10 +22,10 @@ public:
 	void updateTH(int temp, int humid);
 	void button();
 	bool connect = false;
+	int temp = 0, humid = 0;
 private:
 	std::function<void(double)> updateCallback;
 	sf::RenderWindow* window;
-	int temp = 0, humid = 0;
 	bool focus = true;
 	bool lmb_pressed = false;
 	bool button_action = false;
