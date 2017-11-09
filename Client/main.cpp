@@ -17,8 +17,8 @@ int main()
 
 	sf::Socket::Status client_status;
 	sf::TcpSocket socket;
-	//sf::Socket::Status status = socket.connect("192.168.1.43", 23);
-	sf::Socket::Status status = socket.connect("79.160.104.89", 2323); // Thomas sin Arduino
+	//sf::Socket::Status status = socket.connect("192.168.1.43", 23);	// Lokal tilkobling om nødvendig
+	sf::Socket::Status status = socket.connect("79.160.104.89", 2323);	// Thomas sin Arduino
 
 	if (status != sf::Socket::Status::Done) {
 		std::cout << "Could not connect to server" << std::endl;
@@ -39,8 +39,6 @@ int main()
 	context.update([&request, &received, &waiting, &client_status, &socket, &buffer, &context, &status](double delta_time) {
 		request = context.connect;
 		
-		//std::cout << "request:" << request << " waiting:" << waiting << std::endl;
-
 		if (request && !waiting) {
 			client_status = socket.receive(buffer, sizeof(buffer), received);
 			std::cout << "Request data from arduino..." << std::endl;
@@ -78,8 +76,6 @@ int main()
 
 std::vector<std::string> recieve(char buffer[256])
 {
-	//std::cout << "server said " << buffer << std::endl;
-
 	int i = 0;
 	bool write = false;
 	std::string return_string;
