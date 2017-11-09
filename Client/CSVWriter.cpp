@@ -1,18 +1,25 @@
 #include "CSVWriter.h"
 
-/*
-class CSVWriter
-{
-private:
-	std::string filnavn;
-	std::string dele;
-	int linje;
-public:
-	CSVWriter(std::string filnavn, std::string deler = ",") : //Bytte deler dersom vi vil splitte med noe annet
-		filnavn(filnavn), dele(deler), linje(0)
-	{}
+CSVWriter::CSVWriter(std::string filename, std::string splitter) {
+	filnavn = filename;
+	dele = splitter;
+	linje = 0;
+}
 
-	template<typename T>
-	void addDatainRow(T first, T last);
+
+CSVWriter::CSVWriter(std::string filename) {
+	filnavn = filename;
+	dele = ",";
+	linje = 0;
+}
+
+void CSVWriter::addDatainRow(std::vector<std::string> list)
+{
+	std::fstream fil;
+
+	fil.open(filnavn, std::ios::out | (linje ? std::ios::app : std::ios::trunc));
+	fil << list.at(0) << dele << list.at(1) << "\n";
+	linje++;
+
+	fil.close();
 };
-*/
