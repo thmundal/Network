@@ -1,25 +1,25 @@
 #include "CSVWriter.h"
 
-CSVWriter::CSVWriter(std::string filename, std::string splitter) {
-	filnavn = filename;
-	dele = splitter;
-	linje = 0;
+CSVWriter::CSVWriter(std::string _filename, std::string _splitter) {
+	filename = _filename;
+	separator = _splitter;
+	line = 0;
 }
 
 
 CSVWriter::CSVWriter(std::string filename) {
-	filnavn = filename;
-	dele = ",";
-	linje = 0;
+	filename = filename;
+	separator = ",";
+	line = 0;
 }
 
 void CSVWriter::addDatainRow(std::vector<std::string> list)
 {
-	std::fstream fil;
+	std::fstream filehandle;
 
-	fil.open(filnavn, std::ios::out | (linje ? std::ios::app : std::ios::trunc));
-	fil << list.at(0) << dele << list.at(1) << "\n";
-	linje++;
+	filehandle.open(filename, std::ios::out | (line ? std::ios::app : std::ios::trunc));
+	filehandle << list.at(0) << separator << list.at(1) << "\n";
+	line++;
 
-	fil.close();
+	filehandle.close();
 };

@@ -6,9 +6,9 @@
 class CSVWriter
 {
 private:
-	std::string filnavn;
-	std::string dele;
-	int linje;
+	std::string filename;
+	std::string separator;
+	int line;
 public:
 	CSVWriter(std::string, std::string);
 	CSVWriter(std::string);
