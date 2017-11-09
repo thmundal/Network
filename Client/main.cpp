@@ -20,8 +20,6 @@ int main()
 	//sf::Socket::Status status = socket.connect("192.168.1.43", 23);
 	sf::Socket::Status status = socket.connect("79.160.104.89", 2323); // Thomas sin Arduino
 
-	socket.send("a", 1);
-
 	if (status != sf::Socket::Status::Done) {
 		std::cout << "Could not connect to server" << std::endl;
 		return 0;
