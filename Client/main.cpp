@@ -13,8 +13,8 @@ CSVWriter writer = CSVWriter("Data.csv");
 
 int main()
 {
-	DisplayWindow context(1280, 720, "Temperature and humidity");
 
+	DisplayWindow context(1280, 720, "Temperature and humidity");
 	sf::Socket::Status client_status;
 	sf::TcpSocket socket;
 	//sf::Socket::Status status = socket.connect("192.168.1.43", 23);	// Lokal tilkobling om nødvendig
@@ -46,12 +46,11 @@ int main()
 		}
 
 		if (waiting && client_status != socket.Done) {
-			context.printText("Waiting for data...", 25, 325, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
+			context.printText("Waiting for data...", 25, 500, 36, sf::Color(255, 255, 255), "Montserrat-Regular.ttf");
 		}
 
 		if (waiting && client_status == socket.Done) {
 			std::cout << "Data received, handle..." << std::endl;
-			context.printText("Reading data...", 25, 325, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
 			std::vector<std::string> values = recieve(buffer);
 			context.updateTH(std::stoi(values.at(0)), std::stoi(values.at(1)));
 			request = false;
@@ -59,12 +58,9 @@ int main()
 			context.connect = false;
 		}
 
-		context.printText("Connection status: " + std::to_string(status), 25, 30, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
-		context.printText("Network status: " + std::to_string(client_status) , 25, 75, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
 		context.button();
-		
 		context.drawGraph();
-		context.printText("Temperature: " + std::to_string(context.temp) + "C", 25, 180, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
+		context.printText("Temperature: " + std::to_string(context.temp) + "C", 25, 185, 36, sf::Color(225, 77, 67), "SairaSemiCondensed-Regular.ttf");
 		context.printText("Humidity: " + std::to_string(context.humid) + "%", 25, 275, 36, sf::Color(105, 168, 187), "SairaSemiCondensed-Regular.ttf");
 	});
 

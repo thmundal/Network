@@ -17,7 +17,7 @@ void CSVWriter::addDatainRow(std::vector<std::string> list)
 {
 	std::fstream filehandle;
 
-	filehandle.open(filename, std::ios::out | (line ? std::ios::app : std::ios::trunc));
+	filehandle.open(filename.c_str(), std::ios::out | (line ? std::ios::app : std::ios::trunc));
 	filehandle << list.at(0) << separator << list.at(1) << "\n";
 	line++;
 
